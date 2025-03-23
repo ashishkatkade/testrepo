@@ -1,0 +1,17 @@
+name: This is my first workflow and it will run a docker image
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to docker hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker Image
+        run: docker build -t myrepo/testapp:latest .
+
+      - name: Push Docker Image to Docker Hub
+        run: docker push myrepo/testapp:latest
